@@ -31,6 +31,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import Model.InvoiceModel;
 import Model.StaffModel;
+import View.*;
 import javax.swing.DefaultComboBoxModel;
 /**
  *

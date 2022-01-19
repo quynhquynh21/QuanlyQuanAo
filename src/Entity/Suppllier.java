@@ -11,10 +11,10 @@ package Entity;
  */
 public class Suppllier {
      
-    private int codesupplier;
-    private String namesupplier, numbersupplier, addresssupplier;
+
+    private String namesupplier, numbersupplier, addresssupplier,codesupplier;
     
-    public Suppllier(int codesupplier, String namesupplier, String numbersupplier, String addresssupplier) {
+    public Suppllier(String codesupplier, String namesupplier, String numbersupplier, String addresssupplier) {
         this.codesupplier = codesupplier;
         this.namesupplier = namesupplier;
         this.numbersupplier = numbersupplier;
@@ -29,11 +29,11 @@ public class Suppllier {
         this.numbersupplier = numbersupplier;
         this.addresssupplier = addresssupplier;
     }
-    public int getCodesupplier() {
+    public String getCodesupplier() {
         return codesupplier;
     }
 
-    public void setCodesupplier(int codesupplier) {
+    public void setCodesupplier(String codesupplier) {
         this.codesupplier = codesupplier;
     }
 

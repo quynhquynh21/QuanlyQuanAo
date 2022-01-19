@@ -61,10 +61,14 @@ public class StaffController implements ActionListener, DocumentListener {
             Staff staff = getStaffInfo();
             if (staff != null) {
                 if (check_number.checkPhone(staff.getNumberstaff())) {
-                    DAO.insert(staff);
-                    clearStaffInfo();
-                    staffView.showListStaff(new StaffModel(DAO.getAllStaff()));
-                    showMessage("Thêm thành công!");
+                    if (DAO.CheckAdd(staff.getNumberstaff())) {
+                        DAO.insert(staff);
+                        clearStaffInfo();
+                        staffView.showListStaff(new StaffModel(DAO.getAllStaff()));
+                        showMessage("Thêm thành công!");
+                    }else{
+                        showMessage("Nhân viên đã tồn tại");
+                    }
                 } else {
                     showMessage("Sai định dạng số điện thoại");
                 }
@@ -80,9 +84,8 @@ public class StaffController implements ActionListener, DocumentListener {
 
         } else if (e.getSource() == staffView.btnDelet) {
             Staff staff = getStaffInfo();
-
             if (staff != null) {
-                if (DAO.CheckDelete(staff.getCodestaff())) {
+                if (DAO.CheckDelete(staff.getCodestaff().replaceAll("[^\\d.]", ""))) {
                     DAO.deleteStaff(staff);
                     clearStaffInfo();
                     ArrayList<Staff> ds = DAO.getAllStaff();
@@ -93,7 +96,7 @@ public class StaffController implements ActionListener, DocumentListener {
                     }
                     showMessage("Xóa thành công!");
                 } else {
-                    showMessage("Nhân viên đang làm việc");
+                    showMessage("<html><center>Vui lòng xoá thông tin nhân viên<br>ở các bảng khác");
                 }
             }
         }
@@ -120,7 +123,7 @@ public class StaffController implements ActionListener, DocumentListener {
         try {
             Staff staff = new Staff();
             if (staffView.codestaff.getText() != null && !"".equals(staffView.codestaff.getText())) {
-                staff.setCodestaff(Integer.parseInt(staffView.codestaff.getText()));
+                staff.setCodestaff(staffView.codestaff.getText().trim().replaceAll("[^\\d.]", ""));
             }
             staff.setNamestaff(staffView.namestaff.getText().trim());
             staff.setNumberstaff(staffView.numberstaff.getText().trim());
@@ -138,12 +141,9 @@ public class StaffController implements ActionListener, DocumentListener {
         TableRowSorter<StaffModel> sorter = new TableRowSorter<>(staffModel);
         staffView.tableqa.setRowSorter(sorter);
 //        sorter.setRowFilter(RowFilter.regexFilter(("(?i)" + txtString)));
-        
 
-        
-            sorter.setRowFilter(RowFilter.regexFilter(("(?i)" + txtString)));
-        
-        
+        sorter.setRowFilter(RowFilter.regexFilter(("(?i)" + txtString)));
+
     }
 
     @Override

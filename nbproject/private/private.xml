@@ -3,34 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/DAO/SQL.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Controller/CustommerController.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/DAO/InvoiceDetailsDAO.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/View/SupplierView.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Model/CustommerModel.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Controller/InvoiceController.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/View/ImportView.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Controller/ImportController.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/DAO/InvoiceDAO.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/View/FormView.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Entity/Import.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/DAO/CustommerDAO.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/View/StaffView.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Model/ImporModel.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Controller/StaffController.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Entity/Invoice.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/View/InvoiceDetailsView.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/DAO/SuppllierDAO.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Model/InvoiceDetailsModel.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/View/InvoiceView.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Controller/SupplierController.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Model/InvoiceModel.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/DAO/ImportDAO.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Controller/InvoiceDetailsController.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Model/StaffModel.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/Entity/Suppllier.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/DAO/StaffDAO.java</file>
-            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/Language%20Program/Java/JavaAdvanced/FromGiaoDien/src/View/CustommerView.java</file>
+            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/QuanlyQuanAo/src/View/InvoiceView.java</file>
+            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/QuanlyQuanAo/src/DAO/InvoiceDAO.java</file>
+            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/QuanlyQuanAo/src/Controller/InvoiceController.java</file>
+            <file>file:/C:/Users/BUIDUCQUYNH/Desktop/QuanlyQuanAo/src/View/ComboboxCustom.java</file>
         </group>
     </open-files>
 </project-private>

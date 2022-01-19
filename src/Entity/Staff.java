@@ -10,13 +10,13 @@ package Entity;
  * @author BUIDUCQUYNH
  */
 public class Staff {
-    private  int codestaff;
-    private  String namestaff,addressstaff,numberstaff;
+
+    private  String namestaff,addressstaff,numberstaff,codestaff;
 
     public Staff() {
     }
 
-    public Staff(int codestaff, String namestaff, String numberstaff, String addressstaff) {
+    public Staff(String codestaff, String namestaff, String numberstaff, String addressstaff) {
         this.codestaff = codestaff;
         this.namestaff = namestaff;
         this.numberstaff = numberstaff;
@@ -31,11 +31,11 @@ public class Staff {
         
     }
     
-    public int getCodestaff() {
+    public String getCodestaff() {
         return codestaff;
     }
 
-    public void setCodestaff(int codestaff) {
+    public void setCodestaff(String codestaff) {
         this.codestaff = codestaff;
     }
 

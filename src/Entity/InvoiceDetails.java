@@ -11,20 +11,15 @@ package Entity;
  */
 public class InvoiceDetails {
 
-    private int codeinvoice, countbuy, codeclothes;
-    private String nameclothes;
-    private float unitprice,total;
+    private int countbuy, codeclothes;
+    private String nameclothes, codeinvoice;
+    private float unitprice, total;
     public float[] totalPrice;
 
-    public InvoiceDetails(int codeinvoice, int codeclothes, int countbuy, float unitprice) {
-        this.codeinvoice = codeinvoice;
-        this.countbuy = countbuy;
-        this.codeclothes = codeclothes;
-        this.unitprice = unitprice;
-
+    public InvoiceDetails() {
     }
 
-    public InvoiceDetails(int codeinvoice, int codeclothes,String nameclothes, int countbuy, float unitprice,float total) {
+    public InvoiceDetails(String codeinvoice, int codeclothes, String nameclothes, int countbuy, float unitprice, float total) {
         this.codeinvoice = codeinvoice;
         this.codeclothes = codeclothes;
         this.nameclothes = nameclothes;
@@ -33,11 +28,11 @@ public class InvoiceDetails {
         this.total = total;
     }
 
-    public int getCodeinvoice() {
+    public String getCodeinvoice() {
         return codeinvoice;
     }
 
-    public void setCodeinvoice(int codeinvoice) {
+    public void setCodeinvoice(String codeinvoice) {
         this.codeinvoice = codeinvoice;
     }
 
@@ -80,15 +75,17 @@ public class InvoiceDetails {
     public void setNameclothes(String nameclothes) {
         this.nameclothes = nameclothes;
     }
-    public float getTongTien( int n) {
+
+    public float getTongTien(int n) {
         float tong = 0;
         for (int i = 0; i < n; i++) {
             tong += totalPrice[i];
         }
         return tong;
     }
-     @Override
+
+    @Override
     public String toString() {
-        return "{" + "id=" + codeinvoice + ", hoTen=" + codeclothes + ",họ tên"+nameclothes+", diaChi=" + countbuy + ", tenLop=" + unitprice + ", namSinh=" + total + '}';
+        return "{" + "id=" + codeinvoice + ", hoTen=" + codeclothes + ",họ tên" + nameclothes + ", diaChi=" + countbuy + ", tenLop=" + unitprice + ", namSinh=" + total + '}';
     }
 }

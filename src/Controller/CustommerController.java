@@ -20,7 +20,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 import DAO.SQL;
-
 /**
  *
  * @author BUIDUCQUYNH
@@ -48,13 +47,19 @@ public class CustommerController implements ActionListener, DocumentListener {
             Custommer custommer = getCustommerInfo();
             if (custommer != null) {
                 if (checkNumber.checkPhone(custommer.getNumbercustomer())) {
-                    DAO.insert(custommer);
-                    clearStaffInfo();
-                    custommerView.showListCustommer(new CustommerModel(DAO.getAllCustommers()));
-                    showMessage("Thêm thành công!");
+                    if (DAO.CheckAdd(custommer.getNumbercustomer())) {
+                        DAO.insert(custommer);
+                        clearStaffInfo();
+                        custommerView.showListCustommer(new CustommerModel(DAO.getAllCustommers()));
+                        showMessage("Thêm thành công!");
+                    } else {
+                        showMessage("Khách hàng đã tồn tại");
+                        
+                    }
                 } else {
                     showMessage("Sai định dạng số điện thoại");
                 }
+
             }
         } else if (e.getSource() == custommerView.btnEdit) {
             Custommer custommer = getCustommerInfo();
@@ -68,15 +73,19 @@ public class CustommerController implements ActionListener, DocumentListener {
             Custommer custommer = getCustommerInfo();
 
             if (custommer != null) {
-                DAO.deleteCustommer(custommer);
-                clearStaffInfo();
-                ArrayList<Custommer> ds = DAO.getAllCustommers();
-                if (ds != null) {
-                    custommerView.showListCustommer(new CustommerModel(ds));
+                if (DAO.CheckDelete(custommer.getCodecustommer())) {
+                    DAO.deleteCustommer(custommer);
+                    clearStaffInfo();
+                    ArrayList<Custommer> ds = DAO.getAllCustommers();
+                    if (ds != null) {
+                        custommerView.showListCustommer(new CustommerModel(ds));
+                    } else {
+                        showMessage("Dữ liệu rỗng");
+                    }
+                    showMessage("Xóa thành công!");
                 } else {
-                    showMessage("Dữ liệu rỗng");
+                    showMessage("<html><center>Vui lòng xoá thông tin hoá đơn<br>của khách hàng");
                 }
-                showMessage("Xóa thành công!");
             }
         }
     }
@@ -101,7 +110,7 @@ public class CustommerController implements ActionListener, DocumentListener {
         try {
             Custommer custommer = new Custommer();
             if (custommerView.codecustommer.getText() != null && !"".equals(custommerView.codecustommer.getText())) {
-                custommer.setCodecustommer(Integer.parseInt(custommerView.codecustommer.getText()));
+                custommer.setCodecustommer(custommerView.codecustommer.getText().trim().replaceAll("[^\\d.]", ""));
             }
             custommer.setNamecustomer(custommerView.namecustomer.getText().trim());
             custommer.setNumbercustomer(custommerView.numbercustomer.getText().trim());

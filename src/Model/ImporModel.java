@@ -6,7 +6,9 @@
 package Model;
 
 import Entity.Import;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.table.AbstractTableModel;
 import sun.security.rsa.RSACore;
 
@@ -23,9 +25,13 @@ public class ImporModel extends AbstractTableModel{
     public ImporModel(ArrayList<Import> _imports) {
         imports = _imports;
         data = new Object[imports.size()][];
+        Locale localeVN = new Locale("vi", "VN");
+        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
         for (int i = 0; i < imports.size(); i++) {
             Import st = imports.get(i);
-            Object[] row = {st.getCodeclothes(), st.getNameclothes(), st.getPriceclothes(), st.getCountclothes(),
+            
+            String priceclothes = currencyVN.format(st.getPriceclothes());
+            Object[] row = {st.getCodeclothes(), st.getNameclothes(), priceclothes, st.getCountclothes(),
                 st.getUnit(),st.getDateimport(),st.getNameimporter(),st.getNamesupplier()};
             data[i] = row;
 

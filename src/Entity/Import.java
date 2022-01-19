@@ -10,14 +10,14 @@ package Entity;
  * @author BUIDUCQUYNH
  */
 public class Import {
-    private int codeclothes,countclothes,codestaff,codesupplier;
-    private String nameclothes ,unit,dateimport,nameimporter,namesupplier;
+    private int countclothes,codestaff,codesupplier;
+    private String nameclothes ,unit,dateimport,nameimporter,namesupplier,codeclothes;
     private float priceclothes;
 
     public  Import(){
         
     }
-    public Import(int codeclothes, String nameclothes, float priceclothes, int countclothes, String unit, String dateimport,int codestaff,int codesupplier, String nameimporter, String namesupplier ) {
+    public Import(String codeclothes, String nameclothes, float priceclothes, int countclothes, String unit, String dateimport,int codestaff,int codesupplier, String nameimporter, String namesupplier ) {
         
         this.codeclothes = codeclothes;
         this.nameclothes = nameclothes;
@@ -30,7 +30,7 @@ public class Import {
         this.nameimporter = nameimporter;
         this.namesupplier = namesupplier;
     }
-     public Import(int codeclothes, String nameclothes, float priceclothes, int countclothes, String unit, String dateimport,int codestaff,int codesupplier) {
+    public Import(String codeclothes, String nameclothes, float priceclothes, int countclothes, String unit, String dateimport,int codestaff,int codesupplier) {
         
         this.codeclothes = codeclothes;
         this.nameclothes = nameclothes;
@@ -55,11 +55,11 @@ public class Import {
         this.namesupplier = namesupplier;
     }
      
-    public int getCodeclothes() {
+    public String getCodeclothes() {
         return codeclothes;
     }
 
-    public void setCodeclothes(int codeclothes) {
+    public void setCodeclothes(String codeclothes) {
         this.codeclothes = codeclothes;
     }
 

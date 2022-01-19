@@ -36,6 +36,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import Model.InvoiceDetailsModel;
 import Model.StaffModel;
+
 /**
  *
  * @author BUIDUCQUYNH
@@ -45,47 +46,47 @@ public class InvoiceDetailsView extends JFrame {
     public JTable tableqa;
     public JButton btnAdd, btnDelet, btnEdit;
     public JScrollPane jScrollPaneqaTable;
-    public JTextField codeinvoice , countbuy, textFieldSearch,total,codeclothes,unitprice;
+    public JTextField codeinvoice, countbuy, textFieldSearch, total, codeclothes, unitprice;
     public JDateChooser purchasedate;
     public JComboBox nameclothes;
-    public JLabel totaLabel,VND;
-    
-    InvoiceDetailsModel invoiceDetailsModel;
+    public JLabel totaLabel;
     InvoiceDetailsController controller;
-    InvoiceDetailsDAO invoiceDetailsDAO;
-    
+
     public void showListInvoiceDetails(InvoiceDetailsModel invoiceDetailsModel) {
         tableqa.setModel(invoiceDetailsModel);
-        tableqa.getTableHeader().setFont( new Font( "Arial" , Font.BOLD, 13 ));
+        tableqa.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
 //        tableqa.getColumnModel().getColumn(0).setPreferredWidth(110);
 //        tableqa.getColumnModel().getColumn(1).setPreferredWidth(120);
 //        tableqa.getColumnModel().getColumn(2).setPreferredWidth(120);
 //        tableqa.getColumnModel().getColumn(3).setPreferredWidth(200);
     }
-    public void showTotal(String s){
+
+    public void showTotal(String s) {
         totaLabel.setText(s);
     }
-     public void showComboboxNameClothes(DefaultComboBoxModel defaultComboBoxModel){
-        
+
+    public void showComboboxNameClothes(DefaultComboBoxModel defaultComboBoxModel) {
         nameclothes.setModel(defaultComboBoxModel);
     }
+
+    public void setText(String code) {
+        codeinvoice.setText(code);
+    }
+
     public InvoiceDetailsView() {
         this.setTitle("Chi tiết hoá đơn");
         nameclothes = new JComboBox();
         tableqa = new JTable();
         totaLabel = new JLabel();
-        invoiceDetailsDAO = new InvoiceDetailsDAO();
-        invoiceDetailsModel = new InvoiceDetailsModel(invoiceDetailsDAO.getAllInvoiceDetail());
-        controller = new InvoiceDetailsController(this, invoiceDetailsModel);
-//        controller.showInvoiceDetailsView();
+        controller = new InvoiceDetailsController(this);
         InvoiceDetailsController.myEventTable mEventTable = controller.new myEventTable();
         tableqa.getSelectionModel().addListSelectionListener(mEventTable);
-        
+
 //        setBorder(new EmptyBorder(8, 8, 8, 8)); 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
-        
+
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -104,7 +105,7 @@ public class InvoiceDetailsView extends JFrame {
     class Input1 extends JPanel {
 
         public Input1() {
-            this.setPreferredSize(new Dimension(600,200));
+            this.setPreferredSize(new Dimension(600, 200));
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(5, 5, 5, 5);
@@ -123,15 +124,14 @@ public class InvoiceDetailsView extends JFrame {
 
             gbc.gridx += 2;
             add(new JLabel("Số lượng mua"), gbc);
-            
-            gbc.gridx =0;
-            gbc.gridy ++;
-            add(new JLabel("Đơn giá"),gbc);
-            
-            gbc.gridx +=2;
-            add(new JLabel("Thành tiền"),gbc);
-            
-            
+
+            gbc.gridx = 0;
+            gbc.gridy++;
+            add(new JLabel("Đơn giá"), gbc);
+
+            gbc.gridx += 2;
+            add(new JLabel("Thành tiền"), gbc);
+
             gbc.gridx = 1;
             gbc.gridy = 0;
 //      giãn chiều ngang đối tượng sao cho khít
@@ -150,7 +150,7 @@ public class InvoiceDetailsView extends JFrame {
             add(codeclothes, gbc);
 
             gbc.gridx = 1;
-            gbc.gridy++; 
+            gbc.gridy++;
             nameclothes.setBackground(Color.white);
             nameclothes.setSelectedItem(null);
             add(nameclothes, gbc);
@@ -158,23 +158,26 @@ public class InvoiceDetailsView extends JFrame {
             gbc.gridx += 2;
             countbuy = new JTextField(10);
             add(countbuy, gbc);
-            
-            gbc.gridx =1;
-            gbc.gridy ++;
+
+            gbc.gridx = 1;
+            gbc.gridy++;
             unitprice = new JTextField();
-            add(unitprice,gbc);
-            
-            gbc.gridx +=2;
+            unitprice.setEnabled(false);
+            add(unitprice, gbc);
+
+            gbc.gridx += 2;
             total = new JTextField();
-            add(total,gbc);
-            
+            total.setEnabled(false);
+            add(total, gbc);
+
         }
     }
 
     class Table1 extends JPanel {
+
         public Table1() {
-           
-            tableqa.getTableHeader().setFont( new Font( "Arial" , Font.BOLD, 13 ));
+
+            tableqa.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
             jScrollPaneqaTable = new JScrollPane();
             jScrollPaneqaTable.setViewportView(tableqa);
             jScrollPaneqaTable.setPreferredSize(new Dimension(600, 300));
@@ -186,7 +189,7 @@ public class InvoiceDetailsView extends JFrame {
             JPanel detainJPanel = new JPanel(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.insets = new Insets(10, 10, 10, 10);
-            
+
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.anchor = GridBagConstraints.EAST;
@@ -201,15 +204,17 @@ public class InvoiceDetailsView extends JFrame {
             textFieldSearch.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(77, 77, 77)));
             textFieldSearch.getDocument().addDocumentListener(controller);
             serach.add(textFieldSearch);
+
            
-            
-            VND = new JLabel("VND");
             totalPrice.add(totaLabel);
-            totalPrice.add(VND);
             
-            btnAdd = new JButton("Thêm",icon2);
-            btnEdit = new JButton("Sửa",icon3);
-            btnDelet = new JButton("Xoá",icon1);
+
+            btnAdd = new JButton("Thêm", icon2);
+            btnAdd.addActionListener(controller);
+            btnEdit = new JButton("Sửa", icon3);
+            btnEdit.addActionListener(controller);
+            btnDelet = new JButton("Xoá", icon1);
+            btnDelet.addActionListener(controller);
 
             JPanel buttonsPane = new JPanel(new GridBagLayout());
             gbc = new GridBagConstraints();
@@ -229,9 +234,10 @@ public class InvoiceDetailsView extends JFrame {
             setLayout(new BorderLayout());
             add(detainJPanel);
             add(serach, BorderLayout.NORTH);
-            add(totalPrice,BorderLayout.SOUTH);
+            add(totalPrice, BorderLayout.SOUTH);
             add(buttonsPane, BorderLayout.EAST);
 
         }
     }
+
 }

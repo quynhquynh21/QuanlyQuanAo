@@ -32,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 import DAO.SQL;
+
 /**
  *
  * @author BUIDUCQUYNH
@@ -45,6 +46,7 @@ public class ImportController implements ActionListener, DocumentListener {
 
     public ImportController() {
     }
+
     public ImportController(ImportView _importView) {
         importView = _importView;
         DAO = new ImportDAO();
@@ -62,10 +64,15 @@ public class ImportController implements ActionListener, DocumentListener {
         if (e.getSource() == importView.btnAdd) {
             Import ip = getImportInfo();
             if (ip != null) {
-                DAO.insert(ip);
-                clearStaffInfo();
-                importView.showListImport(new ImporModel(DAO.getAllImports()));
-                showMessage("Thêm thành công!");
+                if (DAO.CheckAdd(ip.getNameclothes())) {
+                    DAO.insert(ip);
+                    clearStaffInfo();
+                    importView.showListImport(new ImporModel(DAO.getAllImports()));
+                    showMessage("Thêm thành công!");
+                } else {
+                    showMessage("Quần áo đã tồn tại");
+                }
+
             }
         } else if (e.getSource() == importView.btnEdit) {
             Import ip = getImportInfo();
@@ -80,16 +87,21 @@ public class ImportController implements ActionListener, DocumentListener {
             Import ip = getImportInfo();
 
             if (ip != null) {
-                DAO.delete(ip);
-                clearStaffInfo();
-                ArrayList<Import> ds = DAO.getAllImports();
-                if (ds != null) {
-                    importView.showListImport(new ImporModel(ds));
+                if (DAO.CheckDelete(ip.getCodeclothes())) {
+                    DAO.delete(ip);
+                    clearStaffInfo();
+                    ArrayList<Import> ds = DAO.getAllImports();
+                    if (ds != null) {
+                        importView.showListImport(new ImporModel(ds));
+                    } else {
+                        showMessage("Dữ liệu rỗng");
+                    }
+                    showMessage("Xóa thành công!");
                 } else {
-                    showMessage("Dữ liệu rỗng");
+                    showMessage("<html><center>Vui lòng xoá quần áo trong bảng<br>chi tiết hoá đơn");
                 }
-                showMessage("Xóa thành công!");
             }
+
         }
     }
 
@@ -99,7 +111,7 @@ public class ImportController implements ActionListener, DocumentListener {
         try {
             Import ip = new Import();
             if (importView.codeclothes.getText() != null && !"".equals(importView.codeclothes.getText())) {
-                ip.setCodeclothes(Integer.parseInt(importView.codeclothes.getText()));
+                ip.setCodeclothes(importView.codeclothes.getText().trim().replaceAll("[^\\d.]", ""));
             }
             ip.setNameclothes(importView.nameclothes.getText().trim());
             ip.setPriceclothes(Float.parseFloat(importView.priceclothes.getText()));
@@ -110,11 +122,11 @@ public class ImportController implements ActionListener, DocumentListener {
             ip.setDateimport(df.format(importView.dateimport.getDate()));
 
             Staff staff = (Staff) importView.importer.getSelectedItem();
-            int codeStaff = staff.getCodestaff();
+            int codeStaff = Integer.parseInt(staff.getCodestaff().replaceAll("[^\\d.]", ""));
             ip.setCodestaff(codeStaff);
 
             Suppllier suppllier = (Suppllier) importView.supplier.getSelectedItem();
-            int codeSupplier = suppllier.getCodesupplier();
+            int codeSupplier = Integer.parseInt(suppllier.getCodesupplier().replaceAll("[^\\d.]", ""));
             ip.setCodesupplier(codeSupplier);
 
             return ip;
@@ -179,7 +191,7 @@ public class ImportController implements ActionListener, DocumentListener {
             if (row >= 0) {
                 importView.codeclothes.setText(importView.tableqa.getModel().getValueAt(row, 0).toString());
                 importView.nameclothes.setText(importView.tableqa.getModel().getValueAt(row, 1).toString());
-                importView.priceclothes.setText(importView.tableqa.getModel().getValueAt(row, 2).toString());
+                importView.priceclothes.setText(importView.tableqa.getModel().getValueAt(row, 2).toString().replaceAll("[^\\d]", ""));
                 importView.countclothes.setText(importView.tableqa.getModel().getValueAt(row, 3).toString());
                 importView.unit.setText(importView.tableqa.getModel().getValueAt(row, 4).toString());
 

@@ -27,33 +27,38 @@ import DAO.SQL;
  * @author BUIDUCQUYNH
  */
 public class SupplierController implements ActionListener, DocumentListener {
-
+    
     SuppllierDAO DAO;
     SQL checkNumber;
     private SupplierView supplierView;
     private SupplierModel supplierModel;
-
+    
     public SupplierController(SupplierView _supplierView) {
         supplierView = _supplierView;
         DAO = new SuppllierDAO();
         checkNumber = new SQL();
     }
-
+    
     public void showSupplierView() {
         supplierView.showListSupplier(new SupplierModel(DAO.getAllSuppllier()));
-
+        
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == supplierView.btnAdd) {
             Suppllier custommer = getSupplierInfo();
             if (custommer != null) {
-                if(checkNumber.checkPhone(custommer.getNumbersupplier())){
-                    DAO.insert(custommer);
-                clearStaffInfo();
-                supplierView.showListSupplier(new SupplierModel(DAO.getAllSuppllier()));
-                showMessage("Thêm thành công!");
+                if (checkNumber.checkPhone(custommer.getNumbersupplier())) {
+                    if (DAO.CheckAdd(custommer.getNumbersupplier())) {
+                        DAO.insert(custommer);
+                        clearStaffInfo();
+                        supplierView.showListSupplier(new SupplierModel(DAO.getAllSuppllier()));
+                        showMessage("Thêm thành công!");
+                    } else {
+                        showMessage("Nhà cung cấp đã tồn tại");
+                    }
+                    
                 }
             }
         } else if (e.getSource() == supplierView.btnEdit) {
@@ -63,10 +68,10 @@ public class SupplierController implements ActionListener, DocumentListener {
                 supplierView.showListSupplier(new SupplierModel(DAO.getAllSuppllier()));
                 showMessage("Thay đổi thành công");
             }
-
+            
         } else if (e.getSource() == supplierView.btnDelet) {
             Suppllier suppllier = getSupplierInfo();
-
+            
             if (suppllier != null) {
                 if (DAO.CheckDelete(suppllier.getCodesupplier())) {
                     DAO.deleteSupplier(suppllier);
@@ -84,11 +89,11 @@ public class SupplierController implements ActionListener, DocumentListener {
             }
         }
     }
-
+    
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(supplierView, message);
     }
-
+    
     public void clearStaffInfo() {
         supplierView.codesupplier.setText("");
         supplierView.namesupplier.setText("");
@@ -100,13 +105,13 @@ public class SupplierController implements ActionListener, DocumentListener {
         // enable Add button
 //        custommerView.btnAdd.setEnabled(true);
     }
-
+    
     public Suppllier getSupplierInfo() {
         // validate student        
         try {
             Suppllier suppllier = new Suppllier();
             if (supplierView.codesupplier.getText() != null && !"".equals(supplierView.codesupplier.getText())) {
-                suppllier.setCodesupplier(Integer.parseInt(supplierView.codesupplier.getText()));
+                suppllier.setCodesupplier(supplierView.codesupplier.getText().trim().replaceAll("[^\\d.]", ""));
             }
             suppllier.setNamesupplier(supplierView.namesupplier.getText().trim());
             suppllier.setNumbersupplier(supplierView.numbersupplier.getText().trim());
@@ -117,7 +122,7 @@ public class SupplierController implements ActionListener, DocumentListener {
         }
         return null;
     }
-
+    
     public void search() {
         String txtString = supplierView.textFieldSearch.getText();
         supplierModel = (SupplierModel) supplierView.tableqa.getModel();
@@ -125,28 +130,28 @@ public class SupplierController implements ActionListener, DocumentListener {
         supplierView.tableqa.setRowSorter(sorter);
         sorter.setRowFilter(RowFilter.regexFilter(("(?i)" + txtString)));
     }
-
+    
     @Override
     public void insertUpdate(DocumentEvent e) {
         search();
     }
-
+    
     @Override
     public void removeUpdate(DocumentEvent e) {
         search();
     }
-
+    
     @Override
     public void changedUpdate(DocumentEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     public class myEventTable implements ListSelectionListener {
-
+        
         public myEventTable() {
-
+            
         }
-
+        
         @Override
         public void valueChanged(ListSelectionEvent e) {
             int row = supplierView.tableqa.getSelectedRow();

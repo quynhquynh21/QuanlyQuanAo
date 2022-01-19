@@ -11,13 +11,13 @@ package Entity;
  */
 public class Custommer {
 
-    private int codecustommer;
+    private String codecustommer;
     private String namecustomer, numbercustomer, addresscustomer;
 
     public Custommer() {
     }
 
-    public Custommer(int codecustommer, String namecustomer, String numbercustomer, String addresscustomer) {
+    public Custommer(String codecustommer, String namecustomer, String numbercustomer, String addresscustomer) {
         this.codecustommer = codecustommer;
         this.namecustomer = namecustomer;
         this.numbercustomer = numbercustomer;
@@ -56,11 +56,11 @@ public class Custommer {
         this.addresscustomer = addresscustomer;
     }
 
-    public int getCodecustommer() {
+    public String getCodecustommer() {
         return codecustommer;
     }
 
-    public void setCodecustommer(int codecustommer) {
+    public void setCodecustommer(String codecustommer) {
         this.codecustommer = codecustommer;
     }
 

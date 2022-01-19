@@ -24,7 +24,10 @@ public class CustommerDAO {
     private String sqlInsert = "Insert into quanao.custommer (namecustommer,numbercustommer,addresscustommer) values (?,?,?)";
     private String sqlUpdate = "UPDATE quanao.custommer SET namecustommer = ?, numbercustommer = ?, addresscustommer =? WHERE (codecustommer = ?)";
     private String sqlDelete = "delete from quanao.custommer where codecustommer=?";
-
+    private String check_add = "SELECT * FROM quanao.custommer"
+            + " WHERE  quanao.custommer.numbercustommer = ? ";
+    private String check_custommer = "SELECT * FROM quanao.custommer,quanao.invoice"
+            + " WHERE  quanao.custommer.codecustommer = quanao.invoice.codecustommer AND quanao.custommer.codecustommer =? ";
     public CustommerDAO() {
     }
 
@@ -37,8 +40,10 @@ public class CustommerDAO {
             try {
                 st = con.createStatement();
                 rs = st.executeQuery(selectall);
+                
                 while (rs.next()) {
-                    Custommer custommer = new Custommer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                    String codeCustommer = rs.getString(5) + rs.getInt(1);
+                    Custommer custommer = new Custommer(codeCustommer, rs.getString(2), rs.getString(3), rs.getString(4));
                     listAll.add(custommer);
                 }
             } catch (SQLException e) {
@@ -79,7 +84,7 @@ public class CustommerDAO {
             pr.setString(1, custommer.getNamecustomer());
             pr.setString(2, custommer.getNumbercustomer());
             pr.setString(3, custommer.getAddresscustomer());
-            pr.setInt(4, custommer.getCodecustommer());
+            pr.setString(4, custommer.getCodecustommer().replaceAll("[^\\d.]", ""));
             pr.executeUpdate();
             pr.close();
         } catch (SQLException e1) {
@@ -95,7 +100,7 @@ public class CustommerDAO {
         int k = 0;
         try {
             pr = con.prepareStatement(sqlDelete);
-            pr.setInt(1, custommer.getCodecustommer());
+            pr.setString(1, custommer.getCodecustommer().replaceAll("[^\\d.]", ""));
             k = pr.executeUpdate();
             pr.close();
         } catch (SQLException e) {
@@ -108,5 +113,51 @@ public class CustommerDAO {
             return true;
         }
         return false;
+    }
+     public Boolean CheckDelete(String check_id) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(check_custommer);
+            stmt.setString(1, check_id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                rs.close();
+                stmt.close();
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnec(con);
+        }
+    }
+     public Boolean CheckAdd(String check_id) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(check_add);
+            stmt.setString(1, check_id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                rs.close();
+                stmt.close();
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnec(con);
+        }
     }
 }

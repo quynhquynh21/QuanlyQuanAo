@@ -20,7 +20,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 
-
 /**
  *
  * @author BUIDUCQUYNH
@@ -32,12 +31,13 @@ public class InvoiceDAO {
     private String sqlInsert = "Insert into quanao.invoice (codecustommer,purchasedate,codestaff) values (?,?,?)";
     private String sqlUpdate = "UPDATE quanao.invoice SET codecustommer = ?, purchasedate = ?, codestaff =? WHERE (codeinvoice = ?)";
     private String sqlDelete = "delete from quanao.invoice where codeinvoice=?";
+    private String sqlDeleteinvoice = "delete from quanao.invoicedetails where codeinvoice=?";
     
-    private String selectallqa = "SELECT * FROM\n" +
-"	quanao.invoice \n" +
-"INNER JOIN quanao.staff ON quanao.invoice.codestaff = quanao.staff.codestaff\n" +
-"INNER JOIN quanao.custommer ON quanao.invoice.codecustommer = quanao.custommer.codecustommer\n" +
-"WHERE quanao.invoice.codecustommer = quanao.custommer.codecustommer AND quanao.invoice.codestaff = quanao.staff.codestaff ORDER BY codeinvoice";
+    private String selectallqa = "SELECT * FROM\n"
+            + "	quanao.invoice \n"
+            + "INNER JOIN quanao.staff ON quanao.invoice.codestaff = quanao.staff.codestaff\n"
+            + "INNER JOIN quanao.custommer ON quanao.invoice.codecustommer = quanao.custommer.codecustommer\n"
+            + "WHERE quanao.invoice.codecustommer = quanao.custommer.codecustommer AND quanao.invoice.codestaff = quanao.staff.codestaff ORDER BY codeinvoice";
 
     public InvoiceDAO() {
     }
@@ -52,7 +52,8 @@ public class InvoiceDAO {
                 st = con.createStatement();
                 rs = st.executeQuery(selectallqa);
                 while (rs.next()) {
-                    Invoice invoice = new Invoice(rs.getInt(1), rs.getInt(2), rs.getString("namecustommer"), rs.getString(3), rs.getInt(4),rs.getString("namestaff"));
+                    String codeinvoice = rs.getString(5) + rs.getInt(1);
+                    Invoice invoice = new Invoice(codeinvoice, rs.getInt(2), rs.getString("namecustommer"), rs.getString(3), rs.getInt(4), rs.getString("namestaff"));
                     listAll.add(invoice);
                 }
             } catch (SQLException e) {
@@ -76,7 +77,7 @@ public class InvoiceDAO {
             pr = con.prepareStatement(selectallcustommer);
             rs = pr.executeQuery();
             while (rs.next()) {
-                model.addElement(new Custommer(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+                model.addElement(new Custommer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
             }
         } catch (SQLException e) {
         } finally {
@@ -97,7 +98,7 @@ public class InvoiceDAO {
             pr = con.prepareStatement(selectallstaff);
             rs = pr.executeQuery();
             while (rs.next()) {
-                model.addElement(new Staff(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+                model.addElement(new Staff(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
             }
         } catch (SQLException e) {
         } finally {
@@ -135,7 +136,7 @@ public class InvoiceDAO {
             pr.setInt(1, invoice.getCodecustomer());
             pr.setString(2, invoice.getPurchasedate());
             pr.setInt(3, invoice.getCodestaff());
-            pr.setInt(4, invoice.getCodeinvoice());
+            pr.setString(4, invoice.getCodeinvoice().replaceAll("[^\\d.]", ""));
             System.out.println(pr.toString());
             pr.executeUpdate();
             pr.close();
@@ -149,10 +150,16 @@ public class InvoiceDAO {
     public boolean delete(Invoice invoice) {
         Connection con = getConnection();
         PreparedStatement pr = null;
+        
         int k = 0;
         try {
+            pr = con.prepareStatement(sqlDeleteinvoice);
+            pr.setString(1, invoice.getCodeinvoice());
+            k = pr.executeUpdate();
+            pr.close();
+            
             pr = con.prepareStatement(sqlDelete);
-            pr.setInt(1, invoice.getCodeinvoice());
+            pr.setString(1, invoice.getCodeinvoice());
             k = pr.executeUpdate();
             pr.close();
         } catch (SQLException e) {
@@ -168,6 +175,6 @@ public class InvoiceDAO {
 
     public static void main(String[] args) {
         InvoiceDAO a = new InvoiceDAO();
-        System.out.println(a.getAllInvoice());
+        System.out.println(a.getCBboxNameStaff());
     }
 }

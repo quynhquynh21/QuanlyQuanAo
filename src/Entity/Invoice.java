@@ -10,14 +10,14 @@ package Entity;
  * @author BUIDUCQUYNH
  */
 public class Invoice {
-    private int codeinvoice,codestaff,codecustomer ;
-    private String purchasedate,namecustommer,namestaff; 
+    private int codestaff,codecustomer ;
+    private String purchasedate,namecustommer,namestaff,codeinvoice; 
 
     public Invoice() {
     }
 
     
-    public Invoice(int codeinvoice, int codecustomer,String namecustommer, String purchasedate, int codestaff,String namestaff) {
+    public Invoice(String codeinvoice, int codecustomer,String namecustommer, String purchasedate, int codestaff,String namestaff) {
         this.codeinvoice = codeinvoice;
         this.codecustomer = codecustomer;
         this.namecustommer = namecustommer;
@@ -34,11 +34,11 @@ public class Invoice {
         this.namestaff = namestaff;
     }
 
-    public int getCodeinvoice() {
+    public String getCodeinvoice() {
         return codeinvoice;
     }
 
-    public void setCodeinvoice(int codeinvoice) {
+    public void setCodeinvoice(String codeinvoice) {
         this.codeinvoice = codeinvoice;
     }
 

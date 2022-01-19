@@ -21,6 +21,8 @@ public class SuppllierDAO {
      private String sqlInsert = "Insert into quanao.supplier (namesupplier,numbersupplier,addresssupplier) values (?,?,?)";
      private String sqlUpdate = "UPDATE quanao.supplier SET namesupplier = ?, numbersupplier = ?, addresssupplier =? WHERE (codesupplier = ?)";
      private String sqlDelete = "delete from quanao.supplier where codesupplier=?";
+      private String check_add = "SELECT * FROM quanao.supplier"
+            + " WHERE  quanao.supplier.numbersupplier = ? ";
      private String check_supplier = "SELECT * FROM quanao.supplier,quanao.import"
             + " WHERE  quanao.supplier.codesupplier = quanao.import.codesupplier AND quanao.supplier.codesupplier =? ";
     public SuppllierDAO() {
@@ -36,8 +38,9 @@ public class SuppllierDAO {
                 st = con.createStatement();
                 rs = st.executeQuery(selectall);
                 while (rs.next()) {
-                    Suppllier staff = new Suppllier(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
-                    listAll.add(staff);
+                    String codesup = rs.getString(5) + rs.getInt(1);
+                    Suppllier suppllier = new Suppllier(codesup, rs.getString(2), rs.getString(3), rs.getString(4));
+                    listAll.add(suppllier);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -77,7 +80,7 @@ public class SuppllierDAO {
             pr.setString(1, suppllier.getNamesupplier());
             pr.setString(2, suppllier.getNumbersupplier());
             pr.setString(3, suppllier.getAddresssupplier());
-            pr.setInt(4, suppllier.getCodesupplier());
+            pr.setString(4, suppllier.getCodesupplier().replaceAll("[^\\d.]", ""));
             pr.executeUpdate();
             pr.close();
         } catch (SQLException e1) {
@@ -93,7 +96,7 @@ public class SuppllierDAO {
         int k = 0;
         try {
             pr = con.prepareStatement(sqlDelete);
-            pr.setInt(1, suppllier.getCodesupplier());
+            pr.setString(1, suppllier.getCodesupplier().replaceAll("[^\\d.]", ""));
             k = pr.executeUpdate();
             pr.close();
         } catch (SQLException e) {
@@ -108,14 +111,37 @@ public class SuppllierDAO {
         return false;
     }
     
-    public Boolean CheckDelete(int check_id) {
+    public Boolean CheckDelete(String check_id) {
         Connection con = null;
         PreparedStatement stmt = null;
 
         try {
             con = getConnection();
             stmt = con.prepareStatement(check_supplier);
-            stmt.setInt(1, check_id);
+            stmt.setString(1, check_id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                rs.close();
+                stmt.close();
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnec(con);
+        }
+    }
+    public Boolean CheckAdd(String check_id) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(check_add);
+            stmt.setString(1, check_id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 rs.close();

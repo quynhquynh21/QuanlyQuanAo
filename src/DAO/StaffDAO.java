@@ -25,6 +25,8 @@ public class StaffDAO {
     private String sqlInsert = "Insert into quanao.staff (namestaff,numberstaff,addressstaff) values (?,?,?)";
     private String sqlUpdate = "UPDATE quanao.staff SET namestaff = ?, numberstaff = ?, addressstaff =? WHERE (codestaff = ?)";   
     private String sqlDelete = "delete from quanao.staff where codestaff=?";
+     private String check_add = "SELECT * FROM quanao.staff"
+            + " WHERE  quanao.staff.numberstaff = ? ";
     private String check_staff = "SELECT * FROM quanao.staff,quanao.import,quanao.invoice"
             + " WHERE  quanao.staff.codestaff = quanao.import.codestaff AND quanao.staff.codestaff =? "
             + "OR quanao.staff.codestaff = quanao.invoice.codestaff AND quanao.staff.codestaff =? ";
@@ -42,7 +44,8 @@ public class StaffDAO {
                 st = con.createStatement();
                 rs = st.executeQuery(selectall);
                 while (rs.next()) {
-                    Staff staff = new Staff(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
+                    String codeStaff = rs.getString(5)+ rs.getInt(1);
+                    Staff staff = new Staff(codeStaff, rs.getString(2), rs.getString(3), rs.getString(4));
                     listAll.add(staff);
                 }
             } catch (SQLException e) {
@@ -83,7 +86,7 @@ public class StaffDAO {
             pr.setString(1, staff.getNamestaff());
             pr.setString(2, staff.getNumberstaff());
             pr.setString(3, staff.getAddressstaff());
-            pr.setInt(4, staff.getCodestaff());
+            pr.setString(4, staff.getCodestaff().replaceAll("[^\\d.]", ""));
             System.out.println(pr.toString());
             pr.executeUpdate();
             pr.close();
@@ -100,7 +103,7 @@ public class StaffDAO {
         int k = 0;
         try {
             pr = con.prepareStatement(sqlDelete);
-            pr.setInt(1, staff.getCodestaff());
+            pr.setString(1, staff.getCodestaff().replaceAll("[^\\d.]", ""));
             k = pr.executeUpdate();
             pr.close();
         } catch (SQLException e) {
@@ -115,15 +118,38 @@ public class StaffDAO {
         return false;
     }
     
-    public Boolean CheckDelete(int check_id) {
+    public Boolean CheckDelete(String check_id) {
         Connection con = null;
         PreparedStatement stmt = null;
 
         try {
             con = getConnection();
             stmt = con.prepareStatement(check_staff);
-            stmt.setInt(1, check_id);
-            stmt.setInt(2, check_id);
+            stmt.setString(1, check_id);
+            stmt.setString(2, check_id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                rs.close();
+                stmt.close();
+                return false;
+            } else {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            closeConnec(con);
+        }
+    }
+    public Boolean CheckAdd(String check_id) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+        try {
+            con = getConnection();
+            stmt = con.prepareStatement(check_add);
+            stmt.setString(1, check_id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 rs.close();

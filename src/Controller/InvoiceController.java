@@ -57,11 +57,21 @@ public class InvoiceController implements ActionListener, DocumentListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == invoiceView.btnDetails) {
-            InvoiceDetailsView invoiceDetailsView = new InvoiceDetailsView();
-            invoiceDetailsView.setVisible(true);
-            invoiceDetailsView.setSize(800, 700);
-            invoiceDetailsView.setResizable(false);
-            invoiceDetailsView.setLocationRelativeTo(null);
+            Invoice invoice = getInvoiceInfo();
+            if (!"0".equals(invoice.getCodeinvoice())) {
+                InvoiceDetailsView invoiceDetailsView = new InvoiceDetailsView();
+                InvoiceDetailsController invoiceDetailsController = new InvoiceDetailsController(invoiceDetailsView);
+                invoiceDetailsView.setText("HD" + invoice.getCodeinvoice());
+                invoiceDetailsController.showInvoiceDetailsView();
+                invoiceDetailsView.setVisible(true);
+                invoiceDetailsView.setSize(800, 700);
+                invoiceDetailsView.setResizable(false);
+                invoiceDetailsView.setLocationRelativeTo(null);
+
+            } else {
+                showMessage("Vui lòng chọn hoá đơn");
+            }
+
         } else if (e.getSource() == invoiceView.btnAdd) {
             Invoice invoice = getInvoiceInfo();
             if (invoice != null) {
@@ -83,6 +93,7 @@ public class InvoiceController implements ActionListener, DocumentListener {
             Invoice invoice = getInvoiceInfo();
 
             if (invoice != null) {
+
                 DAO.delete(invoice);
                 clearStaffInfo();
                 ArrayList<Invoice> ds = DAO.getAllInvoice();
@@ -102,18 +113,21 @@ public class InvoiceController implements ActionListener, DocumentListener {
         try {
             Invoice invoice = new Invoice();
             if (invoiceView.codeinvoice.getText() != null && !"".equals(invoiceView.codeinvoice.getText())) {
-                invoice.setCodeinvoice(Integer.parseInt(invoiceView.codeinvoice.getText()));
+                invoice.setCodeinvoice(invoiceView.codeinvoice.getText().trim().replaceAll("[^\\d.]", ""));
             }
-
+            else{
+                invoice.setCodeinvoice("0");
+            }
             Custommer custommer = (Custommer) invoiceView.namecustomer.getSelectedItem();
-            int codeCustomer = custommer.getCodecustommer();
+            int codeCustomer = Integer.parseInt(custommer.getCodecustommer().replaceAll("[^\\d.]", ""));
             invoice.setCodecustomer(codeCustomer);
 
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             invoice.setPurchasedate(df.format(invoiceView.purchasedate.getDate()));
 
             Staff staff = (Staff) invoiceView.namestaff.getSelectedItem();
-            int codeStaff = staff.getCodestaff();
+//            int codeStaff = staff.getCodestaff();
+            int codeStaff = Integer.parseInt(staff.getCodestaff().replaceAll("[^\\d.]", ""));
             invoice.setCodestaff(codeStaff);
 
             return invoice;
